@@ -10,9 +10,17 @@
 		4F6985AF2C34055100B57BE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6985AE2C34055100B57BE2 /* AppDelegate.swift */; };
 		4F6985B12C34055100B57BE2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6985B02C34055100B57BE2 /* SceneDelegate.swift */; };
 		4F6985B32C34055100B57BE2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6985B22C34055100B57BE2 /* ViewController.swift */; };
-		4F6985B62C34055100B57BE2 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 4F6985B52C34055100B57BE2 /* Base */; };
 		4F6985B82C34055300B57BE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F6985B72C34055300B57BE2 /* Assets.xcassets */; };
 		4F6985BB2C34055300B57BE2 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 4F6985BA2C34055300B57BE2 /* Base */; };
+		4F6985C42C3407E100B57BE2 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F6985C32C3407E100B57BE2 /* SnapKit */; };
+		4F6985C62C340B5900B57BE2 /* NewTodoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6985C52C340B5900B57BE2 /* NewTodoViewController.swift */; };
+		4F6985C82C340B8600B57BE2 /* TitleMemoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6985C72C340B8600B57BE2 /* TitleMemoTableViewCell.swift */; };
+		4F6985CA2C34124000B57BE2 /* OtherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6985C92C34124000B57BE2 /* OtherTableViewCell.swift */; };
+		4F6985CC2C3417E000B57BE2 /* ReuseId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6985CB2C3417E000B57BE2 /* ReuseId.swift */; };
+		4F6985CF2C34260700B57BE2 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4F6985CE2C34260700B57BE2 /* IQKeyboardManagerSwift */; };
+		4F6985D72C3464CE00B57BE2 /* RealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6985D62C3464CE00B57BE2 /* RealmModel.swift */; };
+		4F6985DA2C34653600B57BE2 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4F6985D92C34653600B57BE2 /* RealmSwift */; };
+		4F6985DC2C34C09C00B57BE2 /* TodoListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6985DB2C34C09C00B57BE2 /* TodoListTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,10 +28,15 @@
 		4F6985AE2C34055100B57BE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4F6985B02C34055100B57BE2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		4F6985B22C34055100B57BE2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		4F6985B52C34055100B57BE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4F6985B72C34055300B57BE2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4F6985BA2C34055300B57BE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4F6985BC2C34055300B57BE2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F6985C52C340B5900B57BE2 /* NewTodoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTodoViewController.swift; sourceTree = "<group>"; };
+		4F6985C72C340B8600B57BE2 /* TitleMemoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleMemoTableViewCell.swift; sourceTree = "<group>"; };
+		4F6985C92C34124000B57BE2 /* OtherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherTableViewCell.swift; sourceTree = "<group>"; };
+		4F6985CB2C3417E000B57BE2 /* ReuseId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseId.swift; sourceTree = "<group>"; };
+		4F6985D62C3464CE00B57BE2 /* RealmModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmModel.swift; sourceTree = "<group>"; };
+		4F6985DB2C34C09C00B57BE2 /* TodoListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +44,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F6985DA2C34653600B57BE2 /* RealmSwift in Frameworks */,
+				4F6985C42C3407E100B57BE2 /* SnapKit in Frameworks */,
+				4F6985CF2C34260700B57BE2 /* IQKeyboardManagerSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,10 +75,15 @@
 				4F6985AE2C34055100B57BE2 /* AppDelegate.swift */,
 				4F6985B02C34055100B57BE2 /* SceneDelegate.swift */,
 				4F6985B22C34055100B57BE2 /* ViewController.swift */,
-				4F6985B42C34055100B57BE2 /* Main.storyboard */,
+				4F6985DB2C34C09C00B57BE2 /* TodoListTableViewCell.swift */,
+				4F6985C52C340B5900B57BE2 /* NewTodoViewController.swift */,
+				4F6985C72C340B8600B57BE2 /* TitleMemoTableViewCell.swift */,
+				4F6985C92C34124000B57BE2 /* OtherTableViewCell.swift */,
+				4F6985CB2C3417E000B57BE2 /* ReuseId.swift */,
 				4F6985B72C34055300B57BE2 /* Assets.xcassets */,
 				4F6985B92C34055300B57BE2 /* LaunchScreen.storyboard */,
 				4F6985BC2C34055300B57BE2 /* Info.plist */,
+				4F6985D62C3464CE00B57BE2 /* RealmModel.swift */,
 			);
 			path = ReminderClone;
 			sourceTree = "<group>";
@@ -83,6 +104,11 @@
 			dependencies = (
 			);
 			name = ReminderClone;
+			packageProductDependencies = (
+				4F6985C32C3407E100B57BE2 /* SnapKit */,
+				4F6985CE2C34260700B57BE2 /* IQKeyboardManagerSwift */,
+				4F6985D92C34653600B57BE2 /* RealmSwift */,
+			);
 			productName = ReminderClone;
 			productReference = 4F6985AB2C34055100B57BE2 /* ReminderClone.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +137,11 @@
 				Base,
 			);
 			mainGroup = 4F6985A22C34055100B57BE2;
+			packageReferences = (
+				4F6985C22C3407E100B57BE2 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				4F6985CD2C34260700B57BE2 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
+				4F6985D82C34653600B57BE2 /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
 			productRefGroup = 4F6985AC2C34055100B57BE2 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -127,7 +158,6 @@
 			files = (
 				4F6985B82C34055300B57BE2 /* Assets.xcassets in Resources */,
 				4F6985BB2C34055300B57BE2 /* Base in Resources */,
-				4F6985B62C34055100B57BE2 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,23 +168,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F6985CA2C34124000B57BE2 /* OtherTableViewCell.swift in Sources */,
+				4F6985C82C340B8600B57BE2 /* TitleMemoTableViewCell.swift in Sources */,
+				4F6985CC2C3417E000B57BE2 /* ReuseId.swift in Sources */,
 				4F6985B32C34055100B57BE2 /* ViewController.swift in Sources */,
+				4F6985C62C340B5900B57BE2 /* NewTodoViewController.swift in Sources */,
+				4F6985D72C3464CE00B57BE2 /* RealmModel.swift in Sources */,
 				4F6985AF2C34055100B57BE2 /* AppDelegate.swift in Sources */,
 				4F6985B12C34055100B57BE2 /* SceneDelegate.swift in Sources */,
+				4F6985DC2C34C09C00B57BE2 /* TodoListTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		4F6985B42C34055100B57BE2 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4F6985B52C34055100B57BE2 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		4F6985B92C34055300B57BE2 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -297,9 +325,8 @@
 				INFOPLIST_FILE = ReminderClone/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -307,9 +334,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ilim.ReminderClone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -325,9 +356,8 @@
 				INFOPLIST_FILE = ReminderClone/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -335,9 +365,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ilim.ReminderClone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -363,6 +397,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4F6985C22C3407E100B57BE2 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		4F6985CD2C34260700B57BE2 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.3;
+			};
+		};
+		4F6985D82C34653600B57BE2 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 10.52.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4F6985C32C3407E100B57BE2 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F6985C22C3407E100B57BE2 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		4F6985CE2C34260700B57BE2 /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F6985CD2C34260700B57BE2 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
+		};
+		4F6985D92C34653600B57BE2 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F6985D82C34653600B57BE2 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4F6985A32C34055100B57BE2 /* Project object */;
 }
