@@ -36,9 +36,11 @@ class NewTodoViewController: UIViewController {
     func updateNavigationRightBarButtonState() {
         if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TitleMemoTableViewCell,
            !cell.titleTextView.text.isEmpty {
+            print("not empty")
             navigationItem.rightBarButtonItem?.tintColor = .blue
         } else {
-            navigationItem.rightBarButtonItem?.tintColor = .green
+            print("empty")
+            navigationItem.rightBarButtonItem?.tintColor = .gray
         }
     }
     
@@ -74,6 +76,7 @@ extension NewTodoViewController: UITableViewDelegate, UITableViewDataSource {
         let index = indexPath.row
         if index == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: TitleMemoTableViewCell.id, for: indexPath) as! TitleMemoTableViewCell
+            cell.delegate = self
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: OtherTableViewCell.id, for: indexPath) as! OtherTableViewCell
@@ -85,7 +88,6 @@ extension NewTodoViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension NewTodoViewController: MyTableViewCellDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        print(12312321323)
         updateNavigationRightBarButtonState()
     }
 }
