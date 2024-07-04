@@ -21,7 +21,22 @@
 		4F6985D72C3464CE00B57BE2 /* RealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6985D62C3464CE00B57BE2 /* RealmModel.swift */; };
 		4F6985DA2C34653600B57BE2 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4F6985D92C34653600B57BE2 /* RealmSwift */; };
 		4F6985DC2C34C09C00B57BE2 /* TodoListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6985DB2C34C09C00B57BE2 /* TodoListTableViewCell.swift */; };
+		4F6985E02C3615A900B57BE2 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 4F6985D92C34653600B57BE2 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4F6985E12C3615A900B57BE2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4F6985E02C3615A900B57BE2 /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4F6985AB2C34055100B57BE2 /* ReminderClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReminderClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +113,7 @@
 				4F6985A72C34055100B57BE2 /* Sources */,
 				4F6985A82C34055100B57BE2 /* Frameworks */,
 				4F6985A92C34055100B57BE2 /* Resources */,
+				4F6985E12C3615A900B57BE2 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

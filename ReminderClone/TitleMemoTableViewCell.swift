@@ -80,12 +80,6 @@ class TitleMemoTableViewCell: UITableViewCell {
         textView.clipsToBounds = true
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        print(#function)
-        
-    }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -95,7 +89,9 @@ extension TitleMemoTableViewCell: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         print(#function)
-        delegate?.textViewDidChange(textView)
+        if textView == titleTextView {
+            delegate?.textViewDidChange(textView)
+        }
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {

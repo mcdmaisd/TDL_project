@@ -18,7 +18,7 @@ class OtherTableViewCell: UITableViewCell {
 
     let titleLabel = UILabel()
     let rightImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubviews()
@@ -31,11 +31,15 @@ class OtherTableViewCell: UITableViewCell {
     }
     
     func configureViews(_ index: Int) {
+        print(#function)
         let index = index - 1
+        
         titleLabel.text = Options.allCases[index].rawValue
         titleLabel.textColor = .black
         titleLabel.font = .systemFont(ofSize: 10)
+        
         rightImageView.tintColor = .black
+        
         contentView.backgroundColor = .lightGray
         contentView.layer.cornerRadius = 10
         contentView.clipsToBounds = true
@@ -64,3 +68,4 @@ class OtherTableViewCell: UITableViewCell {
     }
     
 }
+
