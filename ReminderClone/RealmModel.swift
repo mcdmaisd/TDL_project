@@ -14,13 +14,15 @@ class Table: Object {
     @Persisted var memoContent: String?// 메모내용(optional) String?
     @Persisted var deadline: String?//마감일(optional) Date?
     @Persisted var tag: String?
+    @Persisted var priority: String?
     // 왜 convenience 인가?
     // PK인 id는 realm이 알아서 번호를 지정하기 때문에 모든 프로퍼티를 지정해야만 하는 init은 사용 불가능
-    convenience init(memoTitle: String, memoContent: String?, deadline: String?, tag: String?) {
+    convenience init(memoTitle: String, memoContent: String?, deadline: String?, tag: String?, priority: String?) {
         self.init()
         self.memoTitle = memoTitle
         self.memoContent = memoContent
         self.deadline = deadline
         self.tag = tag
+        self.priority = priority
     }
 }

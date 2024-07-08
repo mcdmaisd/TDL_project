@@ -20,29 +20,26 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveNotification), name: NSNotification.Name("memo"), object: nil)
         list = realm?.objects(Table.self)
         print(realm?.configuration.fileURL)
         configureNavBar()
         configureTableView()
     }
     
+    @objc func receiveNotification() {
+        tableView.reloadData()
+    }
+    
     func configureNavBar() {
         let appearance = UINavigationBarAppearance()
-        let left = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(back))
         let right = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: #selector(pullDown))
         
-        left.tintColor = .blue
         right.tintColor = .blue
         appearance.backgroundColor = .darkGray
         
         navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.leftBarButtonItem = left
         navigationItem.rightBarButtonItem = right
-    }
-    
-    @objc func back() {
-        let nav = UINavigationController(rootViewController: NewTodoViewController())
-        self.present(nav, animated: true)
     }
     
     @objc func pullDown() {
@@ -72,6 +69,26 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.reloadRows(at: [IndexPath(row: indexPath.row, section: 0)], with: .automatic)
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let data = list[indexPath.row]
+        
+        if editingStyle == .delete {
+            tableView.beginUpdates()
+            try! realm?.write {
+                realm?.delete(data)
+            }
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.endUpdates()
+        }
+    }
     
 }
 

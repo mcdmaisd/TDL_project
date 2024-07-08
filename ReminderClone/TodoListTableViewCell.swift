@@ -30,10 +30,21 @@ class TodoListTableViewCell: UITableViewCell {
     }
     
     func setData(_ data: Table) {
-        titleLabel.text = data.memoTitle
+        var priority = ""
+        print(#function, data.priority)
+        if data.priority == "high" {
+            priority = "!!!"
+        } else if data.priority == "middle" {
+            priority = "!!"
+        } else {
+            priority = "!"
+        }
+        titleLabel.text = priority + data.memoTitle
         memoLabel.text = data.memoContent
         dateLabel.text = data.deadline
-        tagLabel.text = "#" + (data.tag ?? "")
+        if data.tag != nil {
+            tagLabel.text = "#" + (data.tag ?? "")
+        }
     }
     
     func configureLabels() {

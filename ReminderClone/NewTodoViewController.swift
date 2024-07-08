@@ -9,15 +9,37 @@ import UIKit
 
 import RealmSwift
 
+enum Priority: String, CaseIterable {
+    case low = "낮음"
+    case middle = "중간"
+    case high = "높음"
+    
+    var caseName: String {
+        return String(describing: self)
+    }
+}
+
 class NewTodoViewController: UIViewController {
 
-    let tableView = UITableView()
+    private let tableView = UITableView()
+    private var date: String?
+    private var tag: String?
+    private var priority: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .lightGray
         configureNavBar()
         configureTableView()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.post(name: NSNotification.Name("memo"), object: nil, userInfo: nil)
+        
+        for key in UserDefaults.standard.dictionaryRepresentation().keys {
+            UserDefaults.standard.removeObject(forKey: key.description)
+        }
     }
     
     func configureNavBar() {
@@ -52,24 +74,22 @@ class NewTodoViewController: UIViewController {
     }
     
     @objc func back() {
-        print(#function)
         dismiss(animated: true)
     }
     
     @objc func save() {
-        print(#function)
         guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0))
                 as? TitleMemoTableViewCell else { return }
+        let memo = cell.memoTextView
+        
         let title = cell.titleTextView.text ?? ""
-        let content = cell.memoTextView.text ?? ""
-        let deadline = UserDefaults.standard.string(forKey: "date")
-        let tag = UserDefaults.standard.string(forKey: "tag")
-        let data = Table(memoTitle: title, memoContent: content, deadline: deadline, tag: tag)
+        let content = memo.textColor != UIColor.darkGray ? memo.text : nil
+
+        let data = Table(memoTitle: title, memoContent: content, deadline: date, tag: tag, priority: priority)
         let realm = try! Realm()
         
         try! realm.write {
             realm.add(data)
-            print("Realm create succeed")
         }
         dismiss(animated: true)
     }
@@ -108,30 +128,27 @@ extension NewTodoViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let index = indexPath.row
-        let cell = tableView.dequeueReusableCell(withIdentifier: OtherTableViewCell.id, for: indexPath) as! OtherTableViewCell
-        
+       
         if index == 1 {
             selectDeadline()
         } else if index == 2 {
             setTag()
         } else if index == 3 {
-            //setPriority()
-        } else if index == 4 {
-            
+            setPriority()
         }
-        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
 }
 
 extension NewTodoViewController {
+    
     func selectDeadline() {
-        var date = Date()
-
+        
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let datePicker = UIDatePicker()
-        let ok = UIAlertAction(title: "선택 완료", style: .default) { action in
+        let ok = UIAlertAction(title: "선택 완료", style: .default) { [self](ACTION:UIAlertAction) in
             date = datePicker.date.convertedDate
-            print(date)
+            UserDefaults.standard.setValue(date, forKey: "date")
+            reloadCell(1)
         }
                 
         datePicker.datePickerMode = .date
@@ -146,45 +163,49 @@ extension NewTodoViewController {
         alert.setValue(vc, forKey: "contentViewController")
                 
         present(alert, animated: true)
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy.MM.dd"
-        let dateString = dateFormatter.string(from: date)
-        UserDefaults.standard.setValue(dateString, forKey: "date")
     }
     
     func setTag() {
+        
         let controller = UIAlertController(title: "태그 입력", message: "", preferredStyle: .alert)
         
         controller.addTextField()
         
-        let ok = UIAlertAction(title: "Ok", style: .default) { action in
+        let ok = UIAlertAction(title: "Ok", style: .default) { [self](ACTION:UIAlertAction) in
             if let textfield = controller.textFields?.first {
-                UserDefaults.standard.setValue(textfield.text, forKey: "tag")
+                tag = textfield.text
+                UserDefaults.standard.setValue(tag, forKey: "tag")
+                reloadCell(2)
             }
         }
 
         controller.addAction(ok)
         present(controller, animated: true)
     }
-}
-
-extension Date {
-    var convertedDate: Date {
-        let dateFormatter = DateFormatter()
-        let dateFormat = "yyyy.MM.dd"
-        dateFormatter.dateFormat = dateFormat
-        let formattedDate = dateFormatter.string(from: self)
-
-        dateFormatter.locale = NSLocale.current
-        dateFormatter.timeZone = TimeZone(abbreviation: "GMT+0:00")
-
-        dateFormatter.dateFormat = dateFormat
-        let sourceDate = dateFormatter.date(from: formattedDate)
-
-        return sourceDate!
+    
+    func setPriority() {
+        
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        
+        for item in Priority.allCases {
+            let menu = UIAlertAction(title: item.rawValue, style: .default, handler: { [self](ACTION:UIAlertAction) in
+                print(#function, item.caseName)
+                priority = item.caseName
+                UserDefaults.standard.setValue(item.rawValue, forKey: "priority")
+                reloadCell(3)
+            })
+            alert.addAction(menu)
+        }
+        present(alert, animated: true)
+    }
+    
+    func reloadCell(_ index: Int) {
+        let cell = tableView.dequeueReusableCell(withIdentifier: OtherTableViewCell.id, for: IndexPath(row: index, section: 0)) as! OtherTableViewCell
+        cell.configureViews(index)
+        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
 }
+
 extension NewTodoViewController: MyTableViewCellDelegate {
     func textViewDidChange(_ textView: UITextView) {
         updateNavigationRightBarButtonState()
