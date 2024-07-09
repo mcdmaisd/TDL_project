@@ -6,19 +6,28 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MainViewController: UIViewController {
     
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
     
     let addButton = UIButton()
+    let realm = try! Realm()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionview), name: NSNotification.Name("add"), object: nil)
         addSubviews()
         configureNavBar()
         setUI()
         configureConstraints()
+        print(realm.configuration.fileURL)
+
+    }
+    
+    @objc func reloadCollectionview() {
+        collectionView.reloadData()
     }
     
     func addSubviews() {
@@ -99,7 +108,11 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        navigationController?.pushViewController(ViewController(), animated: true)
+        // 여기서 data에 폴더 설정해주고 그걸 vc.data 이렇게 넘기기
+        // 아니면 인덱스만 보내고 vc에서 그 인덱스 가지고 db 폴더 선택하게 한 다음에 list에 데이터 넣어도 되고
+        let nav = ViewController()
+        nav.index = indexPath.row
+        navigationController?.pushViewController(nav, animated: true)
     }
     
     

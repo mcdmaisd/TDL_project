@@ -17,15 +17,16 @@ class MainCollectionViewCell: UICollectionViewCell {
     let count = UILabel()
     let iconNames = ["calendar.badge.exclamationmark", "calendar", "folder", "flag.fill", "checkmark.circle"]
     let titles = ["오늘", "예정", "전체", "깃발표시", "완료됨"]
+    let repository = RealmRepository()
     
-    var list: Results<Table>!
+    var folder: [Folder]?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.backgroundColor = .gray
         contentView.layer.cornerRadius = 10
         contentView.layer.masksToBounds = true
-        list = realm?.objects(Table.self)
+        folder = repository.fetchFolder()
         addSubviews()
         configureConstraints()
     }
@@ -55,16 +56,15 @@ class MainCollectionViewCell: UICollectionViewCell {
     
     func setData(_ index: Int) {
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
-        //반복문
+        let folder = folder![index]
+
         icon.image = UIImage(systemName: iconNames[index], withConfiguration: largeConfig)
         icon.tintColor = .black
+        
         title.text = titles[index]
         title.textColor = .white
-        if index == 2 {
-            count.text = "\(list.count)"
-        } else {
-            count.text = "0"
-        }
+        
+        count.text = "\(folder.detail.count)"
         count.textColor = .white
         count.font = .boldSystemFont(ofSize: 30)
     }

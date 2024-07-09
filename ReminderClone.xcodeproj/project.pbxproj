@@ -26,6 +26,8 @@
 		4FCAEB472C3AFEDB00BA3C6B /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCAEB462C3AFEDB00BA3C6B /* Options.swift */; };
 		4FCAEB4B2C3B319A00BA3C6B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCAEB4A2C3B319A00BA3C6B /* MainViewController.swift */; };
 		4FCAEB4D2C3B352B00BA3C6B /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCAEB4C2C3B352B00BA3C6B /* MainCollectionViewCell.swift */; };
+		4FCAEB5F2C3C799100BA3C6B /* RealmRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCAEB5E2C3C799100BA3C6B /* RealmRepository.swift */; };
+		4FCAEB642C3CB7D900BA3C6B /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = 4FCAEB632C3CB7D900BA3C6B /* Toast */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -60,6 +62,7 @@
 		4FCAEB462C3AFEDB00BA3C6B /* Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
 		4FCAEB4A2C3B319A00BA3C6B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		4FCAEB4C2C3B352B00BA3C6B /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
+		4FCAEB5E2C3C799100BA3C6B /* RealmRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FCAEB642C3CB7D900BA3C6B /* Toast in Frameworks */,
 				4F6985DA2C34653600B57BE2 /* RealmSwift in Frameworks */,
 				4F6985C42C3407E100B57BE2 /* SnapKit in Frameworks */,
 				4F6985CF2C34260700B57BE2 /* IQKeyboardManagerSwift in Frameworks */,
@@ -79,6 +83,7 @@
 		4F6985A22C34055100B57BE2 = {
 			isa = PBXGroup;
 			children = (
+				4FCAEB5D2C3C615300BA3C6B /* Database */,
 				4F6985AD2C34055100B57BE2 /* ReminderClone */,
 				4F6985AC2C34055100B57BE2 /* Products */,
 			);
@@ -110,9 +115,17 @@
 				4F6985B72C34055300B57BE2 /* Assets.xcassets */,
 				4F6985B92C34055300B57BE2 /* LaunchScreen.storyboard */,
 				4F6985BC2C34055300B57BE2 /* Info.plist */,
-				4F6985D62C3464CE00B57BE2 /* RealmModel.swift */,
 			);
 			path = ReminderClone;
+			sourceTree = "<group>";
+		};
+		4FCAEB5D2C3C615300BA3C6B /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				4F6985D62C3464CE00B57BE2 /* RealmModel.swift */,
+				4FCAEB5E2C3C799100BA3C6B /* RealmRepository.swift */,
+			);
+			path = Database;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,6 +149,7 @@
 				4F6985C32C3407E100B57BE2 /* SnapKit */,
 				4F6985CE2C34260700B57BE2 /* IQKeyboardManagerSwift */,
 				4F6985D92C34653600B57BE2 /* RealmSwift */,
+				4FCAEB632C3CB7D900BA3C6B /* Toast */,
 			);
 			productName = ReminderClone;
 			productReference = 4F6985AB2C34055100B57BE2 /* ReminderClone.app */;
@@ -169,6 +183,7 @@
 				4F6985C22C3407E100B57BE2 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				4F6985CD2C34260700B57BE2 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				4F6985D82C34653600B57BE2 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				4FCAEB622C3CB7D900BA3C6B /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 			);
 			productRefGroup = 4F6985AC2C34055100B57BE2 /* Products */;
 			projectDirPath = "";
@@ -207,6 +222,7 @@
 				4FCAEB452C3AF7F800BA3C6B /* Date+Extension.swift in Sources */,
 				4F6985D72C3464CE00B57BE2 /* RealmModel.swift in Sources */,
 				4F6985AF2C34055100B57BE2 /* AppDelegate.swift in Sources */,
+				4FCAEB5F2C3C799100BA3C6B /* RealmRepository.swift in Sources */,
 				4F6985B12C34055100B57BE2 /* SceneDelegate.swift in Sources */,
 				4F6985DC2C34C09C00B57BE2 /* TodoListTableViewCell.swift in Sources */,
 			);
@@ -455,6 +471,14 @@
 				version = 10.52.1;
 			};
 		};
+		4FCAEB622C3CB7D900BA3C6B /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -472,6 +496,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4F6985D82C34653600B57BE2 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		4FCAEB632C3CB7D900BA3C6B /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FCAEB622C3CB7D900BA3C6B /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

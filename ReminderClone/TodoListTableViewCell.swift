@@ -29,14 +29,16 @@ class TodoListTableViewCell: UITableViewCell {
         contentView.addSubview(tagLabel)
     }
     
+    
+    
     func setData(_ data: Table) {
         var priority = ""
-        print(#function, data.priority)
+        
         if data.priority == "high" {
             priority = "!!!"
         } else if data.priority == "middle" {
             priority = "!!"
-        } else {
+        } else if data.priority == "low" {
             priority = "!"
         }
         titleLabel.text = priority + data.memoTitle

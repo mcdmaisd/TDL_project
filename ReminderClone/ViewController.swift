@@ -13,22 +13,21 @@ import SnapKit
 class ViewController: UIViewController {
 
     let tableView = UITableView()
-    let realm = try? Realm()
-
-    var list: Results<Table>!
+    let repository = RealmRepository()
+    let realm = try! Realm()
+    
+    var index: Int?
+    var list: [Table]!
+    var folder: [Folder]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveNotification), name: NSNotification.Name("memo"), object: nil)
-        list = realm?.objects(Table.self)
-        print(realm?.configuration.fileURL)
+        folder = repository.fetchFolder()
+        list = repository.fetchAll(folder[index!])
+        repository.detectUrl()
         configureNavBar()
         configureTableView()
-    }
-    
-    @objc func receiveNotification() {
-        tableView.reloadData()
     }
     
     func configureNavBar() {
@@ -60,12 +59,12 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        list.count
+        list?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TodoListTableViewCell.id) as! TodoListTableViewCell
-        cell.setData(list[indexPath.row])
+        cell.setData(list![indexPath.row])
         return cell
     }
     
@@ -73,22 +72,60 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.reloadRows(at: [IndexPath(row: indexPath.row, section: 0)], with: .automatic)
     }
     
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .delete
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let data = list[indexPath.row]
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let data = list![indexPath.row]
         
-        if editingStyle == .delete {
+        let delete = UIContextualAction(style: .normal, title: "삭제") { [self]
+            (action, view, completion) in
             tableView.beginUpdates()
-            try! realm?.write {
-                realm?.delete(data)
-            }
+            repository.removeItem(data)
+            list.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
+            NotificationCenter.default.post(name: NSNotification.Name("add"), object: nil, userInfo: nil)
+            completion(true)
         }
+        
+        let flag = UIContextualAction(style: .normal, title: "깃발") { [self]
+            (action, view, completion) in
+            let folder = folder![3]
+            repository.createItem(data, folder: folder)
+            NotificationCenter.default.post(name: NSNotification.Name("add"), object: nil, userInfo: nil)
+            completion(true)
+
+        }
+        
+        let completed = UIContextualAction(style: .normal, title: "완료") { [self]
+            (action, view, completion) in
+            let folder = folder![4]
+            repository.createItem(data, folder: folder)
+            // 
+            completion(true)
+
+        }
+        
+        delete.backgroundColor = .red
+        flag.backgroundColor = .orange
+        completed.backgroundColor = .lightGray
+        
+        let swipeActions = UISwipeActionsConfiguration(actions: [completed, flag, delete])
+        swipeActions.performsFirstActionWithFullSwipe = false
+        
+        return swipeActions
     }
+    
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        let data = list![indexPath.row]
+//        
+//        if editingStyle == .delete {
+//            tableView.beginUpdates()
+//            try! realm?.write {
+//                realm?.delete(data)
+//            }
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+//            tableView.endUpdates()
+//        }
+//    }
     
 }
 

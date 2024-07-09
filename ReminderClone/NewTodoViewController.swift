@@ -8,6 +8,7 @@
 import UIKit
 
 import RealmSwift
+import Toast
 
 enum Priority: String, CaseIterable {
     case low = "낮음"
@@ -21,21 +22,24 @@ enum Priority: String, CaseIterable {
 
 class NewTodoViewController: UIViewController {
 
+    private let repository = RealmRepository()
     private let tableView = UITableView()
+    
     private var date: String?
     private var tag: String?
     private var priority: String?
+    private var folder: [Folder]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .lightGray
+        folder = repository.fetchFolder()
         configureNavBar()
         configureTableView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.post(name: NSNotification.Name("memo"), object: nil, userInfo: nil)
         
         for key in UserDefaults.standard.dictionaryRepresentation().keys {
             UserDefaults.standard.removeObject(forKey: key.description)
@@ -86,11 +90,20 @@ class NewTodoViewController: UIViewController {
         let content = memo.textColor != UIColor.darkGray ? memo.text : nil
 
         let data = Table(memoTitle: title, memoContent: content, deadline: date, tag: tag, priority: priority)
-        let realm = try! Realm()
-        
-        try! realm.write {
-            realm.add(data)
+        let folder = folder![2]
+        // date가 nil이 아니면 int로 바꿔서 오늘날짜랑 비교하고 같으면 오늘에 넣고 뒤에 있으면 예정에 넣고
+        if date != nil {
+            let todayString = Date().getToday()
+            let deadline = date?.replacingOccurrences(of: ".", with: "") ?? ""
+            
+            if Int(deadline) == Int(todayString) {
+                repository.createItem(data, folder: (self.folder?[0])!)
+            } else {
+                repository.createItem(data, folder: (self.folder?[1])!)
+            }
         }
+        repository.createItem(data, folder: folder)
+        NotificationCenter.default.post(name: NSNotification.Name("add"), object: nil, userInfo: nil)
         dismiss(animated: true)
     }
     
@@ -147,6 +160,12 @@ extension NewTodoViewController {
         let datePicker = UIDatePicker()
         let ok = UIAlertAction(title: "선택 완료", style: .default) { [self](ACTION:UIAlertAction) in
             date = datePicker.date.convertedDate
+            let today = Int(Date().getToday()) ?? 0
+            let deadline = Int(date?.replacingOccurrences(of: ".", with: "") ?? "") ?? 0
+            if today > deadline {
+                self.view.makeToast("마감일이 오늘보다 이전 날짜입니다")
+                return
+            }
             UserDefaults.standard.setValue(date, forKey: "date")
             reloadCell(1)
         }
