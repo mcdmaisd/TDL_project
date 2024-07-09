@@ -15,11 +15,11 @@ final class RealmRepository {
         print(realm.configuration.fileURL ?? "")
     }
     
-    func createItem(_ data: Table, folder: Folder) {
+    func addItem(_ data: Table) {
         
         do {
             try realm.write {
-                folder.detail.append(data)
+                realm.add(data)
                 print("create success")
             }
         } catch {
@@ -32,8 +32,8 @@ final class RealmRepository {
         return Array(value)
     }
     
-    func fetchAll(_ folder: Folder) -> [Table] {
-        let value = folder.detail
+    func fetchAll() -> [Table] {
+        let value = realm.objects(Table.self)
         return Array(value)
     }
     
@@ -42,6 +42,32 @@ final class RealmRepository {
             try realm.write {
                 realm.delete(data)
                 print("delete success")
+            }
+        } catch {
+            print("realm error")
+        }
+    }
+    
+    
+    func updateItem(_ data: Table, name: String) {
+        do {
+            try realm.write {
+                if name == "flag" {
+                    if let value = data.flag {
+                        data.flag?.toggle()
+                    } else {
+                        data.flag = true
+                    }
+                } else if name == "completed" {
+                    data.completed.toggle()
+                    data.entire.toggle()
+                    if data.flag != nil { data.flag?.toggle() }
+                    if data.today != nil { data.today?.toggle() }
+                    if data.future != nil { data.future?.toggle() }
+                }
+                
+                realm.add(data, update: .modified)
+                print("update success")
             }
         } catch {
             print("realm error")

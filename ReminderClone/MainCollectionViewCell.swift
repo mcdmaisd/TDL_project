@@ -7,26 +7,20 @@
 
 import UIKit
 
-import RealmSwift
-
 class MainCollectionViewCell: UICollectionViewCell {
     
-    let realm = try? Realm()
     let icon = UIImageView()
     let title = UILabel()
     let count = UILabel()
     let iconNames = ["calendar.badge.exclamationmark", "calendar", "folder", "flag.fill", "checkmark.circle"]
     let titles = ["오늘", "예정", "전체", "깃발표시", "완료됨"]
     let repository = RealmRepository()
-    
-    var folder: [Folder]?
-
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.backgroundColor = .gray
         contentView.layer.cornerRadius = 10
         contentView.layer.masksToBounds = true
-        folder = repository.fetchFolder()
         addSubviews()
         configureConstraints()
     }
@@ -54,17 +48,30 @@ class MainCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func setData(_ index: Int) {
+    func setData(_ list: [Table], _ index: Int) {
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
-        let folder = folder![index]
 
+        var filteredList: [Table]
+        
         icon.image = UIImage(systemName: iconNames[index], withConfiguration: largeConfig)
         icon.tintColor = .black
         
         title.text = titles[index]
         title.textColor = .white
         
-        count.text = "\(folder.detail.count)"
+        if index == 0 {
+            filteredList = list.filter { $0.today == true }
+        } else if index == 1 {
+            filteredList = list.filter { $0.future == true }
+        } else if index == 2 {
+            filteredList = list.filter { $0.entire == true }
+        } else if index == 3 {
+            filteredList = list.filter { $0.flag == true }
+        } else {
+            filteredList = []
+        }
+        
+        count.text = index == 4 ? "" : "\(filteredList.count)"
         count.textColor = .white
         count.font = .boldSystemFont(ofSize: 30)
     }

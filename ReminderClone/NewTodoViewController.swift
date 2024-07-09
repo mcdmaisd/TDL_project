@@ -7,7 +7,6 @@
 
 import UIKit
 
-import RealmSwift
 import Toast
 
 enum Priority: String, CaseIterable {
@@ -28,12 +27,10 @@ class NewTodoViewController: UIViewController {
     private var date: String?
     private var tag: String?
     private var priority: String?
-    private var folder: [Folder]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .lightGray
-        folder = repository.fetchFolder()
         configureNavBar()
         configureTableView()
     }
@@ -89,20 +86,21 @@ class NewTodoViewController: UIViewController {
         let title = cell.titleTextView.text ?? ""
         let content = memo.textColor != UIColor.darkGray ? memo.text : nil
 
-        let data = Table(memoTitle: title, memoContent: content, deadline: date, tag: tag, priority: priority)
-        let folder = folder![2]
+        let data = Table(memoTitle: title, memoContent: content, deadline: date, tag: tag, priority: priority, today: nil, future: nil, entire: true, flag: nil, completed: false)
         // date가 nil이 아니면 int로 바꿔서 오늘날짜랑 비교하고 같으면 오늘에 넣고 뒤에 있으면 예정에 넣고
         if date != nil {
             let todayString = Date().getToday()
             let deadline = date?.replacingOccurrences(of: ".", with: "") ?? ""
             
             if Int(deadline) == Int(todayString) {
-                repository.createItem(data, folder: (self.folder?[0])!)
+                data.today = true
+                repository.addItem(data)
             } else {
-                repository.createItem(data, folder: (self.folder?[1])!)
+                data.future = true
+                repository.addItem(data)
             }
         }
-        repository.createItem(data, folder: folder)
+        repository.addItem(data)
         NotificationCenter.default.post(name: NSNotification.Name("add"), object: nil, userInfo: nil)
         dismiss(animated: true)
     }

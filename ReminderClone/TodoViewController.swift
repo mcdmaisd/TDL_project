@@ -7,27 +7,40 @@
 
 import UIKit
 
-import RealmSwift
 import SnapKit
 
-class ViewController: UIViewController {
+class TodoViewController: UIViewController {
 
     let tableView = UITableView()
     let repository = RealmRepository()
-    let realm = try! Realm()
     
     var index: Int?
     var list: [Table]!
-    var folder: [Folder]!
-
+    var filteredList: [Table]!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(#function)
         view.backgroundColor = .white
-        folder = repository.fetchFolder()
-        list = repository.fetchAll(folder[index!])
-        repository.detectUrl()
+        setList()
         configureNavBar()
         configureTableView()
+    }
+    
+    func setList() {
+        guard let index, let list else { return }
+        print(list)
+        if index == 0 {
+            filteredList = list.filter { $0.today == true }
+        } else if index == 1 {
+            filteredList = list.filter { $0.future == true }
+        } else if index == 2 {
+            filteredList = list.filter { $0.entire == true }
+        } else if index == 3 {
+            filteredList = list.filter { $0.flag == true }
+        } else {
+            filteredList = list.filter { $0.completed == true }
+        }
     }
     
     func configureNavBar() {
@@ -55,16 +68,23 @@ class ViewController: UIViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
+    
+    func renewList(_ index: IndexPath) {
+        tableView.beginUpdates()
+        filteredList.remove(at: index.row)
+        tableView.deleteRows(at: [index], with: .fade)
+        tableView.endUpdates()
+    }
 }
 
-extension ViewController: UITableViewDelegate, UITableViewDataSource {
+extension TodoViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        list?.count ?? 0
+        filteredList?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TodoListTableViewCell.id) as! TodoListTableViewCell
-        cell.setData(list![indexPath.row])
+        cell.setData(filteredList![indexPath.row])
         return cell
     }
     
@@ -73,59 +93,46 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let data = list![indexPath.row]
+        let data = filteredList[indexPath.row]
+        let flagTitle = data.flag != nil ? "깃발 제거" : "깃발"
+        let completedTitle = data.completed ? "완료 취소" : "완료"
         
         let delete = UIContextualAction(style: .normal, title: "삭제") { [self]
             (action, view, completion) in
-            tableView.beginUpdates()
             repository.removeItem(data)
-            list.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            tableView.endUpdates()
-            NotificationCenter.default.post(name: NSNotification.Name("add"), object: nil, userInfo: nil)
+            renewList(indexPath)
             completion(true)
         }
         
-        let flag = UIContextualAction(style: .normal, title: "깃발") { [self]
-            (action, view, completion) in
-            let folder = folder![3]
-            repository.createItem(data, folder: folder)
-            NotificationCenter.default.post(name: NSNotification.Name("add"), object: nil, userInfo: nil)
+        let flag = UIContextualAction(style: .normal, title: flagTitle) { [self]
+            (_, _, completion) in
+            repository.updateItem(data, name: "flag")
+            if index == 3 {
+                renewList(indexPath)
+            } else {
+                tableView.reloadRows(at: [(IndexPath(row: indexPath.row , section: 0))], with: .fade)
+            }
             completion(true)
-
         }
         
-        let completed = UIContextualAction(style: .normal, title: "완료") { [self]
-            (action, view, completion) in
-            let folder = folder![4]
-            repository.createItem(data, folder: folder)
-            // 
+        let completed = UIContextualAction(style: .normal, title: completedTitle) { [self]
+            (_, _, completion) in
+            repository.updateItem(data, name: "completed")
+            renewList(indexPath)
             completion(true)
-
         }
         
         delete.backgroundColor = .red
         flag.backgroundColor = .orange
         completed.backgroundColor = .lightGray
         
-        let swipeActions = UISwipeActionsConfiguration(actions: [completed, flag, delete])
-        swipeActions.performsFirstActionWithFullSwipe = false
+        let swipeActions =
+            index == 4 ?
+            UISwipeActionsConfiguration(actions: [completed, delete]) :
+            UISwipeActionsConfiguration(actions: [completed, flag, delete])
         
+        swipeActions.performsFirstActionWithFullSwipe = false
         return swipeActions
     }
-    
-//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        let data = list![indexPath.row]
-//        
-//        if editingStyle == .delete {
-//            tableView.beginUpdates()
-//            try! realm?.write {
-//                realm?.delete(data)
-//            }
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-//            tableView.endUpdates()
-//        }
-//    }
-    
 }
 

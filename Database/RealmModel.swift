@@ -21,15 +21,24 @@ class Table: Object {
     @Persisted var deadline: String?//마감일(optional) Date?
     @Persisted var tag: String?
     @Persisted var priority: String?
-    @Persisted var folder: String
+    @Persisted var today: Bool?
+    @Persisted var future: Bool?
+    @Persisted var entire: Bool
+    @Persisted var flag: Bool?
+    @Persisted var completed: Bool
     // 왜 convenience 인가?
     // PK인 id는 realm이 알아서 번호를 지정하기 때문에 모든 프로퍼티를 지정해야만 하는 init은 사용 불가능
-    convenience init(memoTitle: String, memoContent: String?, deadline: String?, tag: String?, priority: String?) {
+    convenience init(memoTitle: String, memoContent: String?, deadline: String?, tag: String?, priority: String?, today: Bool?, future: Bool?, entire: Bool, flag: Bool?, completed: Bool) {
         self.init()
         self.memoTitle = memoTitle
         self.memoContent = memoContent
         self.deadline = deadline
         self.tag = tag
         self.priority = priority
+        self.today = today
+        self.future = future
+        self.entire = entire
+        self.flag = flag
+        self.completed = completed
     }
 }

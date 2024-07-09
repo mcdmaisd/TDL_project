@@ -6,27 +6,38 @@
 //
 
 import UIKit
-import RealmSwift
 
 class MainViewController: UIViewController {
     
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
     
+    var list: [Table]?
+    
     let addButton = UIButton()
-    let realm = try! Realm()
+    let repository = RealmRepository()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionview), name: NSNotification.Name("add"), object: nil)
+        list = repository.fetchAll()
         addSubviews()
         configureNavBar()
         setUI()
         configureConstraints()
-        print(realm.configuration.fileURL)
-
+        repository.detectUrl()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        renewList()
     }
     
     @objc func reloadCollectionview() {
+        renewList()
+    }
+    
+    func renewList() {
+        list = repository.fetchAll()
         collectionView.reloadData()
     }
     
@@ -90,10 +101,6 @@ class MainViewController: UIViewController {
             make.bottom.equalTo(addButton.snp.top)
         }
     }
-    
-
-    
-
 }
 
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -103,15 +110,14 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionViewCell.id, for: indexPath) as! MainCollectionViewCell
-        cell.setData(indexPath.row)
+        cell.setData(list!, indexPath.row)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // 여기서 data에 폴더 설정해주고 그걸 vc.data 이렇게 넘기기
-        // 아니면 인덱스만 보내고 vc에서 그 인덱스 가지고 db 폴더 선택하게 한 다음에 list에 데이터 넣어도 되고
-        let nav = ViewController()
+        let nav = TodoViewController()
         nav.index = indexPath.row
+        nav.list = list
         navigationController?.pushViewController(nav, animated: true)
     }
     
