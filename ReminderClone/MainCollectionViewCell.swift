@@ -12,9 +12,6 @@ class MainCollectionViewCell: UICollectionViewCell {
     let icon = UIImageView()
     let title = UILabel()
     let count = UILabel()
-    let iconNames = ["calendar.badge.exclamationmark", "calendar", "folder", "flag.fill", "checkmark.circle"]
-    let titles = ["오늘", "예정", "전체", "깃발표시", "완료됨"]
-    let repository = RealmRepository()
         
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,30 +45,16 @@ class MainCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func setData(_ list: [Table], _ index: Int) {
+    func setData(_ list: [Table?], _ index: Int) {
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
-
-        var filteredList: [Table]
         
-        icon.image = UIImage(systemName: iconNames[index], withConfiguration: largeConfig)
+        icon.image = UIImage(systemName: IconNames.allCases[index].rawValue, withConfiguration: largeConfig)
         icon.tintColor = .black
         
-        title.text = titles[index]
+        title.text = CellTitles.allCases[index].rawValue
         title.textColor = .white
         
-        if index == 0 {
-            filteredList = list.filter { $0.today == true }
-        } else if index == 1 {
-            filteredList = list.filter { $0.future == true }
-        } else if index == 2 {
-            filteredList = list.filter { $0.entire == true }
-        } else if index == 3 {
-            filteredList = list.filter { $0.flag == true }
-        } else {
-            filteredList = []
-        }
-        
-        count.text = index == 4 ? "" : "\(filteredList.count)"
+        count.text = index == 4 ? "" : "\(list.count)"
         count.textColor = .white
         count.font = .boldSystemFont(ofSize: 30)
     }

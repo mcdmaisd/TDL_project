@@ -53,7 +53,7 @@ final class RealmRepository {
         do {
             try realm.write {
                 if name == "flag" {
-                    if let value = data.flag {
+                    if let _ = data.flag {
                         data.flag?.toggle()
                     } else {
                         data.flag = true

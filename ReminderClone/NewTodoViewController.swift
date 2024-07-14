@@ -87,7 +87,6 @@ class NewTodoViewController: UIViewController {
         let content = memo.textColor != UIColor.darkGray ? memo.text : nil
 
         let data = Table(memoTitle: title, memoContent: content, deadline: date, tag: tag, priority: priority, today: nil, future: nil, entire: true, flag: nil, completed: false)
-        // date가 nil이 아니면 int로 바꿔서 오늘날짜랑 비교하고 같으면 오늘에 넣고 뒤에 있으면 예정에 넣고
         if date != nil {
             let todayString = Date().getToday()
             let deadline = date?.replacingOccurrences(of: ".", with: "") ?? ""
@@ -101,7 +100,7 @@ class NewTodoViewController: UIViewController {
             }
         }
         repository.addItem(data)
-        NotificationCenter.default.post(name: NSNotification.Name("add"), object: nil, userInfo: nil)
+        sendNotification("dataChanged")
         dismiss(animated: true)
     }
     
@@ -221,6 +220,7 @@ extension NewTodoViewController {
         cell.configureViews(index)
         tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
+    // deSelect
 }
 
 extension NewTodoViewController: MyTableViewCellDelegate {

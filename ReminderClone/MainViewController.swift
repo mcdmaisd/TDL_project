@@ -7,38 +7,32 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+final class MainViewController: UIViewController {
     
-    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
     
-    var list: [Table]?
-    
-    let addButton = UIButton()
-    let repository = RealmRepository()
+    private let viewModel = MainViewModel()
+    private let addButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionview), name: NSNotification.Name("add"), object: nil)
-        list = repository.fetchAll()
+        print(#function)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadCell), name: NSNotification.Name("dataChanged"), object: nil)
         addSubviews()
         configureNavBar()
         setUI()
         configureConstraints()
-        repository.detectUrl()
+        bindData()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        renewList()
+    func bindData() {
+        viewModel.isListUpdated.bind { _ in
+            self.collectionView.reloadData()
+        }
     }
     
-    @objc func reloadCollectionview() {
-        renewList()
-    }
-    
-    func renewList() {
-        list = repository.fetchAll()
-        collectionView.reloadData()
+    @objc private func reloadCell() {
+        viewModel.isListUpdated.value = ()
     }
     
     func addSubviews() {
@@ -65,11 +59,13 @@ class MainViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         let inset: CGFloat = 10
         let width = UIScreen.main.bounds.width - 3 * inset
+        
         layout.itemSize = CGSize(width: width / 2, height: 100)
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = inset
         layout.minimumLineSpacing = inset
         layout.sectionInset = UIEdgeInsets.init(top: inset, left: inset, bottom: inset, right: inset)
+        
         return layout
     }
     
@@ -77,6 +73,7 @@ class MainViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: MainCollectionViewCell.id)
+        
         addButton.setImage(UIImage(systemName: "plus.circle"), for: .normal)
         addButton.setTitle("새로운 알림", for: .normal)
         addButton.setTitleColor(.blue, for: .normal)
@@ -110,14 +107,16 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionViewCell.id, for: indexPath) as! MainCollectionViewCell
-        cell.setData(list!, indexPath.row)
+        let index = indexPath.row
+        let list = viewModel.filterList(index)
+        cell.setData(list, index)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let nav = TodoViewController()
         nav.index = indexPath.row
-        nav.list = list
+        nav.filteredList = viewModel.filterList(indexPath.row)
         navigationController?.pushViewController(nav, animated: true)
     }
     

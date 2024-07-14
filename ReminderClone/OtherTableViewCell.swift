@@ -42,7 +42,6 @@ class OtherTableViewCell: UITableViewCell {
         if index == 0 { dataLabel.text = date }
         else if index == 1 { dataLabel.text = tags }
         else if index == 2 { dataLabel.text = priority }
-        print(date, tags, priority, "\n----------------------")
         
         dataLabel.textColor = .black
         dataLabel.font = .systemFont(ofSize: 10)
