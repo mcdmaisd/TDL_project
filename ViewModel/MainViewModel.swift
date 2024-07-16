@@ -17,9 +17,14 @@ final class MainViewModel {
     private(set) var isListUpdated: Observable<Void?> = Observable(nil)
     
     init() {
+        print("MainViewModel Init")
         isListUpdated.bind { _ in
             self.listObservable.value = self.repository.fetchAll()
         }
+    }
+    
+    deinit {
+        print("MainViewModel Deinit")
     }
     
     func filterList(_ index: Int) -> Int {

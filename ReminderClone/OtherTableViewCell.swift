@@ -20,20 +20,17 @@ class OtherTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        print(#function, "init")
         addSubviews()
         configureConstraints()
     }
     
     func addSubviews() {
-        print(#function)
         contentView.addSubview(titleLabel)
         contentView.addSubview(rightImageView)
         contentView.addSubview(dataLabel)
     }
     
     func configureViews(_ index: Int) {
-        print(#function)
         let index = index - 1
         titleLabel.text = Options.allCases[index].rawValue
         titleLabel.textColor = .black
@@ -55,7 +52,6 @@ class OtherTableViewCell: UITableViewCell {
     }
     
     func configureConstraints() {
-        print(#function)
 
         titleLabel.snp.makeConstraints { make in
             make.top.leading.equalTo(contentView.safeAreaLayoutGuide).offset(10)

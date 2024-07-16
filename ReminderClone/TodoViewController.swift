@@ -29,6 +29,10 @@ class TodoViewController: UIViewController {
         initIndex()
     }
     
+    deinit {
+        print("TodoViewController Deinit")
+    }
+    
     func addSubViews() {
         view.addSubview(titleLabel)
         view.addSubview(tableView)
@@ -46,11 +50,11 @@ class TodoViewController: UIViewController {
     }
     
     func bindData() {
-        viewModel.filteredList.bind { [self] result in
+        viewModel.filteredList.bind { [weak self] result in
             if result.count == 0 {
-                toggleUI()
+                self?.toggleUI()
             } else {
-                tableView.reloadData()
+                self?.tableView.reloadData()
             }
         }
     }
@@ -135,21 +139,21 @@ extension TodoViewController: UITableViewDelegate, UITableViewDataSource {
         let flagTitle = data.flag ? "깃발 제거" : "깃발"
         let completedTitle = data.completed ? "완료 취소" : "완료"
         
-        let delete = UIContextualAction(style: .normal, title: "삭제") { [self]
+        let delete = UIContextualAction(style: .normal, title: "삭제") { [weak self]
             (_, _, completion) in
-            renewList("delete", data: data)
+            self?.renewList("delete", data: data)
             completion(true)
         }
         
-        let flag = UIContextualAction(style: .normal, title: flagTitle) { [self]
+        let flag = UIContextualAction(style: .normal, title: flagTitle) { [weak self]
             (_, _, completion) in
-            renewList("flag", data: data)
+            self?.renewList("flag", data: data)
             completion(true)
         }
         
-        let completed = UIContextualAction(style: .normal, title: completedTitle) { [self]
+        let completed = UIContextualAction(style: .normal, title: completedTitle) { [weak self]
             (_, _, completion) in
-            renewList("completed", data: data)
+            self?.renewList("completed", data: data)
             completion(true)
         }
         

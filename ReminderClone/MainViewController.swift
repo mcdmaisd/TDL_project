@@ -24,10 +24,14 @@ final class MainViewController: UIViewController {
         bindData()
     }
     
+    deinit {
+        print("MainViewController, Deinit")
+    }
+    
     func bindData() {
         reloadCell()
-        viewModel.listObservable.bind { _ in
-            self.collectionView.reloadData()
+        viewModel.listObservable.bind { [weak self] _ in
+            self?.collectionView.reloadData()
         }
     }
     

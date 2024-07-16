@@ -18,16 +18,21 @@ class TodoViewModel {
     lazy var index = Observable(-1)
     
     init() {
-        index.bind { [self] value in
-            filterList(value) { response in
+        print("TodoViewModel Init")
+        index.bind { [weak self] value in
+            self?.filterList(value) { response in
                 switch response {
                 case.success(let list):
-                    self.filteredList.value = list
+                    self?.filteredList.value = list
                 case.failure(_):
-                    self.filteredList.value = []
+                    self?.filteredList.value = []
                 }
             }
         }
+    }
+    
+    deinit {
+        print("TodoViewModel Deinit")
     }
     
     func filterList(_ index: Int, completion: @escaping (Result<[Table], Error>) -> Void) {

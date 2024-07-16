@@ -88,7 +88,6 @@ class TitleMemoTableViewCell: UITableViewCell {
 extension TitleMemoTableViewCell: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
-        print(#function)
         if textView == titleTextView {
             delegate?.textViewDidChange(textView)
         }

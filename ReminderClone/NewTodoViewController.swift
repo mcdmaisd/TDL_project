@@ -36,6 +36,10 @@ class NewTodoViewController: UIViewController {
         configureTableView()
     }
     
+    deinit {
+        print("NewTodoViewController Deinit")
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -65,11 +69,9 @@ class NewTodoViewController: UIViewController {
         let title = cell.titleTextView.text ?? ""
         
         if !title.isEmpty {
-            print("not empty")
             navigationItem.rightBarButtonItem?.tintColor = .blue
             navigationItem.rightBarButtonItem?.isEnabled = true
         } else if title.isEmpty {
-            print("empty")
             navigationItem.rightBarButtonItem?.tintColor = .gray
             navigationItem.rightBarButtonItem?.isEnabled = false
         }
@@ -163,16 +165,16 @@ extension NewTodoViewController {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let datePicker = UIDatePicker()
         let cancel = UIAlertAction(title: "취소", style: .cancel)
-        let ok = UIAlertAction(title: "선택 완료", style: .default) { [self](ACTION:UIAlertAction) in
-            date = datePicker.date.convertedDate
+        let ok = UIAlertAction(title: "선택 완료", style: .default) { [weak self](ACTION:UIAlertAction) in
+            self?.date = datePicker.date.convertedDate
             let today = Int(Date().getToday()) ?? 0
-            let deadline = Int(date?.replacingOccurrences(of: ".", with: "") ?? "") ?? 0
+            let deadline = Int(self?.date?.replacingOccurrences(of: ".", with: "") ?? "") ?? 0
             if today > deadline {
-                self.view.makeToast("마감일이 오늘보다 이전 날짜입니다")
+                self?.view.makeToast("마감일이 오늘보다 이전 날짜입니다")
                 return
             }
-            UserDefaults.standard.setValue(date, forKey: "date")
-            reloadCell(1)
+            UserDefaults.standard.setValue(self?.date, forKey: "date")
+            self?.reloadCell(1)
         }
                 
         datePicker.datePickerMode = .date
@@ -194,19 +196,19 @@ extension NewTodoViewController {
         
         let controller = UIAlertController(title: "태그 입력", message: "", preferredStyle: .alert)
         let cancel = UIAlertAction(title: "취소", style: .cancel)
-        let ok = UIAlertAction(title: "Ok", style: .default) { [self](ACTION:UIAlertAction) in
+        let ok = UIAlertAction(title: "Ok", style: .default) { [weak self](ACTION:UIAlertAction) in
             let text = controller.textFields?.first?.text
             let removeSpace = text?.replacingOccurrences(of: " ", with: "")
            
             if removeSpace?.count != 0  {
-                tag = text
-                UserDefaults.standard.setValue(tag, forKey: "tag")
+                self?.tag = text
+                UserDefaults.standard.setValue(self?.tag, forKey: "tag")
             } else {
                 UserDefaults.standard.removeObject(forKey: "tag")
-                tag = nil
+                self?.tag = nil
             }
             
-            reloadCell(2)
+            self?.reloadCell(2)
         }
  
         controller.addTextField()
@@ -222,11 +224,10 @@ extension NewTodoViewController {
         let cancel = UIAlertAction(title: "취소", style: .cancel)
 
         for item in Priority.allCases {
-            let menu = UIAlertAction(title: item.rawValue, style: .default, handler: { [self](ACTION:UIAlertAction) in
-                print(#function, item.caseName)
-                priority = item.caseName
+            let menu = UIAlertAction(title: item.rawValue, style: .default, handler: { [weak self](ACTION:UIAlertAction) in
+                self?.priority = item.caseName
                 UserDefaults.standard.setValue(item.rawValue, forKey: "priority")
-                reloadCell(3)
+                self?.reloadCell(3)
             })
             alert.addAction(menu)
         }
@@ -241,7 +242,6 @@ extension NewTodoViewController {
         cell.configureViews(index)
         tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
-    // deSelect
 }
 
 extension NewTodoViewController: MyTableViewCellDelegate {
