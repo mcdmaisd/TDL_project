@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum ErrorCase: Error {
+    case emptyList
+}
+
 class TodoViewModel {
     
     private(set) var filteredList = Observable<[Table]>([])
@@ -15,24 +19,38 @@ class TodoViewModel {
     
     init() {
         index.bind { [self] value in
-            filterList(value)
+            filterList(value) { response in
+                switch response {
+                case.success(let list):
+                    self.filteredList.value = list
+                case.failure(_):
+                    self.filteredList.value = []
+                }
+            }
         }
     }
     
-    func filterList(_ index: Int) {
+    func filterList(_ index: Int, completion: @escaping (Result<[Table], Error>) -> Void) {
         let list = repository.fetchAll()
+        var result: [Table]
         
         switch index {
         case 0:
-            filteredList.value = list.filter { $0.today == true }
+            result = list.filter { $0.today == true }
         case 1:
-            filteredList.value = list.filter { $0.future == true }
+            result = list.filter { $0.future == true }
         case 2:
-            filteredList.value = list.filter { $0.entire == true }
+            result = list.filter { $0.entire == true }
         case 3:
-            filteredList.value = list.filter { $0.flag == true && $0.completed == false }
+            result = list.filter { $0.flag == true && $0.completed == false }
         default:
-            filteredList.value = list.filter { $0.completed == true }
+            result = list.filter { $0.completed == true }
+        }
+                
+        if result.count == 0 {
+            completion(.failure(ErrorCase.emptyList))
+        } else {
+            completion(.success(result))
         }
     }
 }

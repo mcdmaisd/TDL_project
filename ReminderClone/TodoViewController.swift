@@ -46,8 +46,8 @@ class TodoViewController: UIViewController {
     }
     
     func bindData() {
-        viewModel.filteredList.bind { [self] _ in
-            if viewModel.filteredList.value.count == 0 {
+        viewModel.filteredList.bind { [self] result in
+            if result.count == 0 {
                 toggleUI()
             } else {
                 tableView.reloadData()
