@@ -12,6 +12,7 @@ import SnapKit
 class TodoViewController: UIViewController {
     
     let titleLabel = UILabel()
+    let emptyLabel = UILabel()
     let tableView = UITableView()
     let viewModel = TodoViewModel()
     
@@ -20,10 +21,23 @@ class TodoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        initIndex()
+        addSubViews()
         configureNavBar()
-        configureTableView()
+        configureUI()
+        configureConstraints()
         bindData()
+        initIndex()
+    }
+    
+    func addSubViews() {
+        view.addSubview(titleLabel)
+        view.addSubview(tableView)
+        view.addSubview(emptyLabel)
+    }
+    
+    func toggleUI() {
+        emptyLabel.isHidden.toggle()
+        tableView.isHidden.toggle()
     }
     
     func initIndex() {
@@ -32,9 +46,12 @@ class TodoViewController: UIViewController {
     }
     
     func bindData() {
-        viewModel.filteredList.bind { _ in
-            print("reload")
-            self.tableView.reloadData()
+        viewModel.filteredList.bind { [self] _ in
+            if viewModel.filteredList.value.count == 0 {
+                toggleUI()
+            } else {
+                tableView.reloadData()
+            }
         }
     }
     
@@ -53,15 +70,37 @@ class TodoViewController: UIViewController {
         
     }
     
-    func configureTableView() {
-        view.addSubview(tableView)
+    func configureConstraints() {
+        titleLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(view.safeAreaLayoutGuide).offset(5)
+        }
+        
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(5)
+            make.bottom.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        emptyLabel.snp.makeConstraints { make in
+            make.center.equalTo(view.safeAreaLayoutGuide)
+            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(50)
+        }
+    }
+    
+    func configureUI() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 100
         tableView.register(TodoListTableViewCell.self, forCellReuseIdentifier: TodoListTableViewCell.id)
-        tableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
-        }
+
+        titleLabel.text = CellTitles.allCases[index ?? 0].rawValue
+        titleLabel.sizeToFit()
+        titleLabel.font = .boldSystemFont(ofSize: 40)
+        
+        emptyLabel.text = "일정이 없습니다"
+        emptyLabel.font = .boldSystemFont(ofSize: 20)
+        emptyLabel.textColor = .lightGray
+        emptyLabel.textAlignment = .center
+        emptyLabel.isHidden = true
     }
     
     func renewList(_ value: String, data: Table) {

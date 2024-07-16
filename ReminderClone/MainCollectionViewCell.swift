@@ -53,6 +53,7 @@ class MainCollectionViewCell: UICollectionViewCell {
         
         title.text = CellTitles.allCases[index].rawValue
         title.textColor = .white
+        title.font = .boldSystemFont(ofSize: 20)
         
         self.count.text = index == 4 ? "" : "\(count)"
         self.count.textColor = .white
