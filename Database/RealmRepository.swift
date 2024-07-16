@@ -53,15 +53,11 @@ final class RealmRepository {
         do {
             try realm.write {
                 if name == "flag" {
-                    if let _ = data.flag {
-                        data.flag?.toggle()
-                    } else {
-                        data.flag = true
-                    }
+                    data.flag.toggle()
                 } else if name == "completed" {
                     data.completed.toggle()
                     data.entire.toggle()
-                    if data.flag != nil { data.flag?.toggle() }
+                    //if data.flag != nil { data.flag?.toggle() }
                     if data.today != nil { data.today?.toggle() }
                     if data.future != nil { data.future?.toggle() }
                 }

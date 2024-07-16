@@ -38,7 +38,7 @@ final class MainViewModel {
         case 2:
             filteredList = listObservable.value.filter { $0.entire == true }
         case 3:
-            filteredList = listObservable.value.filter { $0.flag == true }
+            filteredList = listObservable.value.filter { $0.flag == true && $0.completed == false }
         default:
             filteredList = listObservable.value.filter { $0.completed == true }
         }

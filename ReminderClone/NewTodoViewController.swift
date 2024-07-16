@@ -86,7 +86,7 @@ class NewTodoViewController: UIViewController {
         let title = cell.titleTextView.text ?? ""
         let content = memo.textColor != UIColor.darkGray ? memo.text : nil
 
-        let data = Table(memoTitle: title, memoContent: content, deadline: date, tag: tag, priority: priority, today: nil, future: nil, entire: true, flag: nil, completed: false)
+        let data = Table(memoTitle: title, memoContent: content, deadline: date, tag: tag, priority: priority, today: nil, future: nil, entire: true, flag: false, completed: false)
         if date != nil {
             let todayString = Date().getToday()
             let deadline = date?.replacingOccurrences(of: ".", with: "") ?? ""

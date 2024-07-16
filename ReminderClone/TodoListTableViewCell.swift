@@ -19,7 +19,6 @@ class TodoListTableViewCell: UITableViewCell {
         addSubviews()
         configureConstraints()
         configureLabels()
-        
     }
     
     func addSubviews() {
@@ -28,8 +27,6 @@ class TodoListTableViewCell: UITableViewCell {
         contentView.addSubview(dateLabel)
         contentView.addSubview(tagLabel)
     }
-    
-    
     
     func setData(_ data: Table) {
         var priority = ""

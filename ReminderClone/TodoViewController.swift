@@ -28,11 +28,12 @@ class TodoViewController: UIViewController {
     
     func initIndex() {
         guard let index else { return }
-        viewModel.index.value = self.index ?? 0
+        viewModel.index.value = index
     }
     
     func bindData() {
-        viewModel.filteredList.bind { list in
+        viewModel.filteredList.bind { _ in
+            print("reload")
             self.tableView.reloadData()
         }
     }
@@ -91,7 +92,7 @@ extension TodoViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let data = viewModel.filteredList.value[indexPath.row]
-        let flagTitle = data.flag == true ? "깃발 제거" : "깃발"
+        let flagTitle = data.flag ? "깃발 제거" : "깃발"
         let completedTitle = data.completed ? "완료 취소" : "완료"
         
         let delete = UIContextualAction(style: .normal, title: "삭제") { [self]
@@ -117,8 +118,6 @@ extension TodoViewController: UITableViewDelegate, UITableViewDataSource {
         completed.backgroundColor = .lightGray
         
         let swipeActions =
-            index == 4 ?
-            UISwipeActionsConfiguration(actions: [completed, delete]) :
             UISwipeActionsConfiguration(actions: [completed, flag, delete])
         
         swipeActions.performsFirstActionWithFullSwipe = false

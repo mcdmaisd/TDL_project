@@ -24,11 +24,11 @@ class Table: Object {
     @Persisted var today: Bool?
     @Persisted var future: Bool?
     @Persisted var entire: Bool
-    @Persisted var flag: Bool?
+    @Persisted var flag: Bool
     @Persisted var completed: Bool
     // 왜 convenience 인가?
     // PK인 id는 realm이 알아서 번호를 지정하기 때문에 모든 프로퍼티를 지정해야만 하는 init은 사용 불가능
-    convenience init(memoTitle: String, memoContent: String?, deadline: String?, tag: String?, priority: String?, today: Bool?, future: Bool?, entire: Bool, flag: Bool?, completed: Bool) {
+    convenience init(memoTitle: String, memoContent: String?, deadline: String?, tag: String?, priority: String?, today: Bool?, future: Bool?, entire: Bool, flag: Bool, completed: Bool) {
         self.init()
         self.memoTitle = memoTitle
         self.memoContent = memoContent

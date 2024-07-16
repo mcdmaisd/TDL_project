@@ -30,7 +30,7 @@ class TodoViewModel {
         case 2:
             filteredList.value = list.filter { $0.entire == true }
         case 3:
-            filteredList.value = list.filter { $0.flag == true }
+            filteredList.value = list.filter { $0.flag == true && $0.completed == false }
         default:
             filteredList.value = list.filter { $0.completed == true }
         }
