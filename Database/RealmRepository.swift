@@ -48,7 +48,6 @@ final class RealmRepository {
         }
     }
     
-    
     func updateItem(_ data: Table, name: String) {
         do {
             try realm.write {
@@ -57,7 +56,6 @@ final class RealmRepository {
                 } else if name == "completed" {
                     data.completed.toggle()
                     data.entire.toggle()
-                    //if data.flag != nil { data.flag?.toggle() }
                     if data.today != nil { data.today?.toggle() }
                     if data.future != nil { data.future?.toggle() }
                 }

@@ -26,7 +26,6 @@ class TitleMemoTableViewCell: UITableViewCell {
         addSubviews()
         configureViews()
         configureConstraints()
-        //observer 등록
     }
     
     func addSubviews() {
@@ -46,8 +45,6 @@ class TitleMemoTableViewCell: UITableViewCell {
             make.horizontalEdges.equalTo(textView).inset(10)
             make.height.equalTo(width / 6)
         }
-        
-        
         
         memoTextView.snp.makeConstraints { make in
             make.top.equalTo(separator.snp.bottom)

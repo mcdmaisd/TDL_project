@@ -9,7 +9,7 @@ import Foundation
 
 final class MainViewModel {
     
-    private let listObservable = Observable<[Table]>([])
+    private(set) var listObservable = Observable<[Table]>([])
     private let repository = RealmRepository()
     
     private var filteredList: [Table?] = []
@@ -17,19 +17,12 @@ final class MainViewModel {
     private(set) var isListUpdated: Observable<Void?> = Observable(nil)
     
     init() {
-        updateList()
+        isListUpdated.bind { _ in
+            self.listObservable.value = self.repository.fetchAll()
+        }
     }
     
-    func readList() -> [Table] {
-        return listObservable.value
-    }
-
-    private func updateList() {
-        listObservable.value = repository.fetchAll()
-    }
-    
-    func filterList(_ index: Int) -> [Table?] {
-        updateList()
+    func filterList(_ index: Int) -> Int {
         switch index {
         case 0:
             filteredList = listObservable.value.filter { $0.today == true }
@@ -42,6 +35,6 @@ final class MainViewModel {
         default:
             filteredList = listObservable.value.filter { $0.completed == true }
         }
-        return filteredList
+        return filteredList.count
     }
 }

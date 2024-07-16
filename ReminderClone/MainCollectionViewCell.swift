@@ -45,7 +45,7 @@ class MainCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func setData(_ list: [Table?], _ index: Int) {
+    func setData(_ count: Int, _ index: Int) {
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
         
         icon.image = UIImage(systemName: IconNames.allCases[index].rawValue, withConfiguration: largeConfig)
@@ -54,9 +54,9 @@ class MainCollectionViewCell: UICollectionViewCell {
         title.text = CellTitles.allCases[index].rawValue
         title.textColor = .white
         
-        count.text = index == 4 ? "" : "\(list.count)"
-        count.textColor = .white
-        count.font = .boldSystemFont(ofSize: 30)
+        self.count.text = index == 4 ? "" : "\(count)"
+        self.count.textColor = .white
+        self.count.font = .boldSystemFont(ofSize: 30)
     }
     
     required init?(coder: NSCoder) {

@@ -16,7 +16,6 @@ final class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadCell), name: NSNotification.Name("dataChanged"), object: nil)
         addSubviews()
         configureNavBar()
@@ -26,7 +25,8 @@ final class MainViewController: UIViewController {
     }
     
     func bindData() {
-        viewModel.isListUpdated.bind { _ in
+        reloadCell()
+        viewModel.listObservable.bind { _ in
             self.collectionView.reloadData()
         }
     }
@@ -108,8 +108,8 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionViewCell.id, for: indexPath) as! MainCollectionViewCell
         let index = indexPath.row
-        let list = viewModel.filterList(index)
-        cell.setData(list, index)
+        let count = viewModel.filterList(index)
+        cell.setData(count, index)
         return cell
     }
     

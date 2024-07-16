@@ -96,7 +96,7 @@ extension TodoViewController: UITableViewDelegate, UITableViewDataSource {
         let completedTitle = data.completed ? "완료 취소" : "완료"
         
         let delete = UIContextualAction(style: .normal, title: "삭제") { [self]
-            (action, view, completion) in
+            (_, _, completion) in
             renewList("delete", data: data)
             completion(true)
         }
@@ -117,8 +117,7 @@ extension TodoViewController: UITableViewDelegate, UITableViewDataSource {
         flag.backgroundColor = .orange
         completed.backgroundColor = .lightGray
         
-        let swipeActions =
-            UISwipeActionsConfiguration(actions: [completed, flag, delete])
+        let swipeActions = UISwipeActionsConfiguration(actions: [completed, flag, delete])
         
         swipeActions.performsFirstActionWithFullSwipe = false
         return swipeActions

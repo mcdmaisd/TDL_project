@@ -10,6 +10,7 @@ import UIKit
 import Toast
 
 enum Priority: String, CaseIterable {
+    case zero = "없음"
     case low = "낮음"
     case middle = "중간"
     case high = "높음"
