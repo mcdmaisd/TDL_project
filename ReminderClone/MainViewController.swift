@@ -116,7 +116,6 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let nav = TodoViewController()
         nav.index = indexPath.row
-        nav.filteredList = viewModel.filterList(indexPath.row)
         navigationController?.pushViewController(nav, animated: true)
     }
     

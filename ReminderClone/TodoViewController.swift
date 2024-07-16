@@ -10,19 +10,31 @@ import UIKit
 import SnapKit
 
 class TodoViewController: UIViewController {
-
-    let tableView = UITableView()
-    let repository = RealmRepository()
     
-    var filteredList: [Table?]?
+    let titleLabel = UILabel()
+    let tableView = UITableView()
+    let viewModel = TodoViewModel()
+    
     var index: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        guard let filteredList, let index else { return }
+        initIndex()
         configureNavBar()
         configureTableView()
+        bindData()
+    }
+    
+    func initIndex() {
+        guard let index else { return }
+        viewModel.index.value = self.index ?? 0
+    }
+    
+    func bindData() {
+        viewModel.filteredList.bind { list in
+            self.tableView.reloadData()
+        }
     }
     
     func configureNavBar() {
@@ -51,22 +63,25 @@ class TodoViewController: UIViewController {
         }
     }
     
-    func renewList(_ index: IndexPath) {
-        tableView.beginUpdates()
-        filteredList?.remove(at: index.row)
-        tableView.deleteRows(at: [index], with: .fade)
-        tableView.endUpdates()
+    func renewList(_ value: String, data: Table) {
+        if value == "delete" {
+            viewModel.repository.removeItem(data)
+        } else {
+            viewModel.repository.updateItem(data, name: value)
+        }
+        viewModel.index.value = self.index ?? 0
+        sendNotification("dataChanged")
     }
 }
 
 extension TodoViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        filteredList?.count ?? 0
+        viewModel.filteredList.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TodoListTableViewCell.id) as! TodoListTableViewCell
-        cell.setData(filteredList![indexPath.row]!)
+        cell.setData(viewModel.filteredList.value[indexPath.row])
         return cell
     }
     
@@ -75,37 +90,25 @@ extension TodoViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let data = filteredList?[indexPath.row]
-        let flagTitle = data?.flag == true ? "깃발 제거" : "깃발"
-        let completedTitle = data!.completed ? "완료 취소" : "완료"
+        let data = viewModel.filteredList.value[indexPath.row]
+        let flagTitle = data.flag == true ? "깃발 제거" : "깃발"
+        let completedTitle = data.completed ? "완료 취소" : "완료"
         
         let delete = UIContextualAction(style: .normal, title: "삭제") { [self]
             (action, view, completion) in
-            repository.removeItem(data!)
-            renewList(indexPath)
-            sendNotification("dataChanged")
+            renewList("delete", data: data)
             completion(true)
         }
         
         let flag = UIContextualAction(style: .normal, title: flagTitle) { [self]
             (_, _, completion) in
-            repository.updateItem(data!, name: "flag")
-            
-            if index == 3 {
-                renewList(indexPath)
-            } else {
-                tableView.reloadRows(at: [(IndexPath(row: indexPath.row , section: 0))], with: .fade)
-            }
-            
-            sendNotification("dataChanged")
+            renewList("flag", data: data)
             completion(true)
         }
         
         let completed = UIContextualAction(style: .normal, title: completedTitle) { [self]
             (_, _, completion) in
-            repository.updateItem(data!, name: "completed")
-            renewList(indexPath)
-            sendNotification("dataChanged")
+            renewList("completed", data: data)
             completion(true)
         }
         

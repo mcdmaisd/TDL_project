@@ -21,12 +21,10 @@ final class MainViewModel {
     }
     
     func readList() -> [Table] {
-        print(#function)
         return listObservable.value
     }
 
     private func updateList() {
-        print(#function)
         listObservable.value = repository.fetchAll()
     }
     
