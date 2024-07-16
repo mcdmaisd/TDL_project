@@ -87,7 +87,8 @@ extension TodoViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.reloadRows(at: [IndexPath(row: indexPath.row, section: 0)], with: .automatic)
+        tableView.deselectRow(at: IndexPath(row: indexPath.row, section: 0), animated: true)
+        navigationController?.pushViewController(TodoDetailViewController(), animated: true)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

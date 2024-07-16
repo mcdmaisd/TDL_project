@@ -86,6 +86,10 @@ class NewTodoViewController: UIViewController {
         
         let title = cell.titleTextView.text ?? ""
         let content = memo.textColor != UIColor.darkGray ? memo.text : nil
+        
+        if tag != nil {
+            tag = "#" + (tag ?? "")
+        }
 
         let data = Table(memoTitle: title, memoContent: content, deadline: date, tag: tag, priority: priority, today: nil, future: nil, entire: true, flag: false, completed: false)
         if date != nil {
@@ -147,6 +151,8 @@ extension NewTodoViewController: UITableViewDelegate, UITableViewDataSource {
         } else if index == 3 {
             setPriority()
         }
+        
+        tableView.deselectRow(at: IndexPath(row: indexPath.row, section: 0), animated: true)
     }
 }
 
@@ -156,6 +162,7 @@ extension NewTodoViewController {
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let datePicker = UIDatePicker()
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
         let ok = UIAlertAction(title: "선택 완료", style: .default) { [self](ACTION:UIAlertAction) in
             date = datePicker.date.convertedDate
             let today = Int(Date().getToday()) ?? 0
@@ -173,6 +180,7 @@ extension NewTodoViewController {
         datePicker.locale = Locale(identifier: "ko_KR")
                 
         alert.addAction(ok)
+        alert.addAction(cancel)
                 
         let vc = UIViewController()
         vc.view = datePicker
@@ -185,25 +193,34 @@ extension NewTodoViewController {
     func setTag() {
         
         let controller = UIAlertController(title: "태그 입력", message: "", preferredStyle: .alert)
-        
-        controller.addTextField()
-        
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
         let ok = UIAlertAction(title: "Ok", style: .default) { [self](ACTION:UIAlertAction) in
-            if let textfield = controller.textFields?.first {
-                tag = textfield.text
+            let text = controller.textFields?.first?.text
+            let removeSpace = text?.replacingOccurrences(of: " ", with: "")
+           
+            if removeSpace?.count != 0  {
+                tag = text
                 UserDefaults.standard.setValue(tag, forKey: "tag")
-                reloadCell(2)
+            } else {
+                UserDefaults.standard.removeObject(forKey: "tag")
+                tag = nil
             }
+            
+            reloadCell(2)
         }
-
+ 
+        controller.addTextField()
         controller.addAction(ok)
+        controller.addAction(cancel)
+        controller.textFields?.first?.text = UserDefaults.standard.string(forKey: "tag")
         present(controller, animated: true)
     }
     
     func setPriority() {
         
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-        
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+
         for item in Priority.allCases {
             let menu = UIAlertAction(title: item.rawValue, style: .default, handler: { [self](ACTION:UIAlertAction) in
                 print(#function, item.caseName)
@@ -213,6 +230,9 @@ extension NewTodoViewController {
             })
             alert.addAction(menu)
         }
+        
+        alert.addAction(cancel)
+        
         present(alert, animated: true)
     }
     

@@ -47,9 +47,7 @@ class TodoListTableViewCell: UITableViewCell {
         titleLabel.text = priority + data.memoTitle + flag
         memoLabel.text = data.memoContent
         dateLabel.text = data.deadline
-        if data.tag != nil {
-            tagLabel.text = "#" + (data.tag ?? "")
-        }
+        tagLabel.text = data.tag
     }
     
     func configureLabels() {
@@ -82,6 +80,11 @@ class TodoListTableViewCell: UITableViewCell {
             make.top.equalTo(memoLabel.snp.bottom).offset(5)
             make.leading.equalTo(dateLabel.snp.trailing).offset(5)
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
     }
 
     required init?(coder: NSCoder) {
