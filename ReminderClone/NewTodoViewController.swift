@@ -10,14 +10,10 @@ import UIKit
 import Toast
 
 enum Priority: String, CaseIterable {
-    case zero = "없음"
-    case low = "낮음"
-    case middle = "중간"
-    case high = "높음"
-    
-    var caseName: String {
-        return String(describing: self)
-    }
+    case zero = ""
+    case low = "!"
+    case middle = "!!"
+    case high = "!!!"
 }
 
 class NewTodoViewController: UIViewController {
@@ -85,14 +81,15 @@ class NewTodoViewController: UIViewController {
         guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0))
                 as? TitleMemoTableViewCell else { return }
         let memo = cell.memoTextView
-        
-        let title = cell.titleTextView.text ?? ""
+        let titleValue = cell.titleTextView.text ?? ""
+        let priority = priority ?? ""
+        let title = priority + titleValue
         let content = memo.textColor != UIColor.darkGray ? memo.text : nil
         
         if tag != nil {
             tag = "#" + (tag ?? "")
         }
-
+        
         let data = Table(memoTitle: title, memoContent: content, deadline: date, tag: tag, priority: priority, today: nil, future: nil, entire: true, flag: false, completed: false)
         if date != nil {
             let todayString = Date().getToday()

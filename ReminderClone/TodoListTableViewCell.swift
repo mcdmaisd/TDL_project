@@ -27,24 +27,9 @@ class TodoListTableViewCell: UITableViewCell {
         contentView.addSubview(dateLabel)
         contentView.addSubview(tagLabel)
     }
-    
-    func setData(_ data: Table) {
-        var priority = ""
-        var flag = ""
-        
-        if data.priority == "high" {
-            priority = "!!!"
-        } else if data.priority == "middle" {
-            priority = "!!"
-        } else if data.priority == "low" {
-            priority = "!"
-        }
-        
-        if data.flag == true {
-            flag = "🚩"
-        }
-        
-        titleLabel.text = priority + data.memoTitle + flag
+
+    func setData(_ data: Table) { // 이렇게 하기 보다는 저장할때 해당 데이터 넣어서 저장하기
+        titleLabel.text = data.flag ? data.memoTitle + "🚩" : data.memoTitle
         memoLabel.text = data.memoContent
         dateLabel.text = data.deadline
         tagLabel.text = data.tag
